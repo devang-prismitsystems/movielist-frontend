@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #093545;
+    --foreground: #ffffff;
+    --primary: #2BD17E;
+    --error: #EB5757;
+    --input: #224957;
+    --card: #092C39;
+}
+
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Montserrat", sans-serif;
+    padding-bottom: 111px;
+    background-image: url('../../public/assets/Vectors.svg');
+    background-position: bottom center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    min-height: 100dvh;
+  }
+  
+  .btn_primary {
+    background-color: var(--primary);
+    padding: 16px 59px;
+    font-weight: 600;
+    border-radius: 10px;
+  }
+    .btn_secondary {
+      background-color: transparent;
+      border: 1px solid white;
+      padding: 16px 59px;
+      font-weight: 600;
+      border-radius: 10px;
+  }
+                input {
+                  background-color: var(--input);
+                }
+        
+                .container {
+                  max-width: 1248px;
+                  margin-inline: auto;
+                  margin-bottom: 100px;
+                }
+        
+                input[type='checkbox'] {
+                  appearance: none;
+                  -webkit-appearance: none;
+}
