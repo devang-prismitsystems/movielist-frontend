@@ -27,13 +27,16 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
         register,
         handleSubmit,
         reset,
+        setValue,
+        watch,
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: initialValues,
     });
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files;
+
+        const file: any = event.target.files;
+        setValue("poster", file);
         const maxSize = 4 * 1024 * 1024;
         if (file && file.length === 1) {
             if (file[0].size > maxSize) {
@@ -53,7 +56,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
 
     return (
         <div className="container mx-auto px-6 rounded-md flex flex-col justify-center gap-8">
-            <h1 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10 text-center pt-8">
+            <h1 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10 pt-8">
                 {movieId ? "Edit Movie" : "Add a New Movie"}
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="mt-10">
@@ -79,7 +82,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                                 id="poster"
                                 type="file"
                                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-[1]"
-                                {...register("poster")}
+                                // {...register("poster")}
                                 onChange={handleFileChange}
                             />
                         </div>

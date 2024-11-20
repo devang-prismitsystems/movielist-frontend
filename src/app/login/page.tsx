@@ -1,5 +1,6 @@
 "use client"
 import Apiservices from '@/apiservices/apiServices'
+import { useAuth } from '@/hooks/authContext'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -13,6 +14,7 @@ type Inputs = {
 
 const Login = () => {
     const router = useRouter();
+    const { login, user, loading } = useAuth();
     const {
         register,
         handleSubmit,
@@ -25,6 +27,7 @@ const Login = () => {
         if (result.success) {
             toast.success(result.message);
             router.push('/movies')
+            login(result.token)
         } else {
             toast.error(result?.response?.data?.message)
         }

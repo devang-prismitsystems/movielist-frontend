@@ -1,3 +1,4 @@
+import { getKeyWithExpiration } from "@/hooks/authContext";
 import axios from "axios";
 const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
 
@@ -6,7 +7,8 @@ const axiosInstance: any = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config: any) => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = getKeyWithExpiration()
     if (!token) return null;
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
@@ -27,10 +29,18 @@ export default class Apiservices {
             return error
         }
     }
+    static profile = async () => {
+        try {
+            const result = await axiosInstance.get(`${BACKEND_URI}/user/profile`);
+            return result.data;
+        } catch (error) {
+            return error
+        }
+    }
     static login = async (data: any) => {
         try {
             const result: any = await axios.post(`${BACKEND_URI}/user/login`, data);
-            localStorage.setItem('token', result.data.token)
+            // localStorage.setItem('token', result.data.token)
             return result.data;
         } catch (error) {
             console.log('error: ', error);
