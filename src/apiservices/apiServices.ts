@@ -4,6 +4,7 @@ const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
 
 const axiosInstance: any = axios.create({
     baseURL: BACKEND_URI,
+    withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config: any) => {
