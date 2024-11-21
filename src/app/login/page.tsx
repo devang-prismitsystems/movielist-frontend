@@ -45,19 +45,19 @@ const Login = () => {
         return;
     }
     return (
-        <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
+        <div className=" flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6 main-wrap">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold ">
+                <h2 className="mt-6 text-center text-[48px] leading-[50px] md:text-[64px] md:leading-[80px] font-semibold ">
                     Sign in
                 </h2>
             </div>
 
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="py-8 px-4 sm:rounded-lg sm:px-10">
+            <div className="mt-10 w-[300px] max-w-full mx-auto">
+                <div className="">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <div className="mt-6">
+                            <div className="">
                                 <input
                                     id="email"
                                     type="email"
@@ -90,7 +90,7 @@ const Login = () => {
 
                         <div className="mt-6">
                             <div className="flex justify-center items-center">
-                                <input id="remember_me" type="checkbox" value="1" className="rounded-md h-4 w-4 transition duration-150 ease-in-out" />
+                                <input id="remember_me" type="checkbox" className="rounded-md h-4 w-4 transition duration-150 ease-in-out" />
                                 <label className="ml-2 block text-sm leading-5">Remember me</label>
                             </div>
 
@@ -98,8 +98,8 @@ const Login = () => {
 
                         <div className="mt-6">
 
-                            <button type="submit" className='btn_primary w-full'>
-                                {isLoading ? "Loading..." : "Sign up"}
+                            <button type="submit" className='btn_primary w-full !p-[15px]'>
+                                {isLoading ? "Loading..." : "Login"}
                             </button>
 
                         </div>
@@ -107,7 +107,7 @@ const Login = () => {
 
                     <p className="mt-10 text-center text-sm/6 ">
                         Not a member?
-                        <Link href="/signup" className="font-semibold ml-2">Login</Link>
+                        <Link href="/signup" className="font-semibold ml-2">Sign up</Link>
                     </p>
 
                 </div>

@@ -23,7 +23,14 @@ body {
     background-repeat: no-repeat;
     min-height: 100dvh;
   }
-  
+  @media(max-width:575px){
+    body{
+     background-image: url('../../public/assets/Vectors-mobile.svg');
+    }
+  }
+  .main-wrap{
+    min-height: calc(100dvh - 111px);
+  }
   .btn_primary {
     background-color: var(--primary);
     padding: 16px 59px;

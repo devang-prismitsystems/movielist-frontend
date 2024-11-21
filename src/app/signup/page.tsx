@@ -37,19 +37,19 @@ const Signup = () => {
         }
     }
     return (
-        <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
+        <div className="main-wrap flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold ">
+                <h2 className="mt-6 text-center text-[48px] leading-[50px] md:text-[64px] md:leading-[80px] font-semibold ">
                     Sign up
                 </h2>
             </div>
 
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="py-8 px-4 sm:rounded-lg sm:px-10">
+            <div className="mt-10 w-[300px] max-w-full mx-auto">
+                <div className="">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <div className="mt-6">
+                            <div className="">
                                 <input
                                     id="email"
                                     type="email"
@@ -82,7 +82,7 @@ const Signup = () => {
 
                         <div className="mt-6">
 
-                            <button type="submit" className='btn_primary w-full'>
+                            <button type="submit" className='btn_primary w-full !p-[15px]'>
                                 {isLoading ? "Loading..." : "Sign up"}
                             </button>
 
