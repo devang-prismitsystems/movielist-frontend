@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const Movies = () => {
     const router = useRouter();
-    const { logout } = useAuth();
+    const { logout } = useAuth()
     const [movies, setMovies] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -47,6 +47,11 @@ const Movies = () => {
         router.push(`/movies/${id}`);
     }, [router]);
 
+    const handleLogout = useCallback(() => {
+        localStorage.removeItem('token');
+        router.push('/login');
+    }, [router]);
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -79,23 +84,23 @@ const Movies = () => {
                 </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-                {movies.length === 0 ? <div className="flex flex-col items-center justify-center h-screen px-4 text-center">
-                    <h2 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10">
-                        Your movie list is empty
-                    </h2>
-                    <button
-                        className="btn_primary mt-4 md:mt-6 px-6 py-2 text-sm md:text-base"
-                        onClick={() => router.push(`/movies/add`)}
-                    >
-                        Add a new movie
-                    </button>
-                </div> : movies.map((movie) => (
+            {movies.length === 0 ? <div className="flex flex-col items-center justify-center h-screen px-4 text-center">
+                <h2 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10">
+                    Your movie list is empty
+                </h2>
+                <button
+                    className="btn_primary mt-4 md:mt-6 px-6 py-2 text-sm md:text-base"
+                    onClick={() => router.push(`/movies/add`)}
+                >
+                    Add a new movie
+                </button>
+            </div> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
+                {movies.map((movie) => (
                     <div key={movie.id} onClick={() => handleCardClick(movie.id)} className="cursor-pointer">
                         <Card title={movie.title} year={movie.publish_year} img={movie.poster} />
                     </div>
                 ))}
-            </div>
+            </div>}
 
             <div className="flex justify-center items-center mt-10 md:mt-[100px]">
                 <Pagination totalPages={totalPages} onPageChange={handlePageChange} />

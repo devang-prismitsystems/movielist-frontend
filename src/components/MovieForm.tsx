@@ -151,7 +151,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                             <button type="button" className="btn_secondary w-full md:w-[168px]" onClick={() => router.push(`/movies`)}>
                                 Cancel
                             </button>
-                            <button type="submit" className="btn_primary w-full md:w-[179px] ">
+                            <button type="submit" className="btn_primary w-full md:w-[179px] flex justify-center items-center ">
                                 {isLoading ? 'Loading...' : "Submit"}
                             </button>
                         </div>
