@@ -3,7 +3,7 @@ import Apiservices from '@/apiservices/apiServices'
 import { useAuth } from '@/hooks/authContext'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from 'react-hot-toast'
 
@@ -14,6 +14,7 @@ type Inputs = {
 
 const Login = () => {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const { login, user, loading } = useAuth();
     const {
         register,
@@ -23,13 +24,20 @@ const Login = () => {
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const result = await Apiservices.login(data);
-        if (result.success) {
-            toast.success(result.message);
-            router.push('/movies')
-            login(result.token)
-        } else {
-            toast.error(result?.response?.data?.message)
+        setIsLoading(true)
+        try {
+            const result = await Apiservices.login(data);
+            if (result.success) {
+                toast.success(result.message);
+                router.push('/movies')
+                login(result.token)
+            } else {
+                toast.error(result?.response?.data?.message)
+            }
+        } catch (error) {
+            toast.error('Something went wrong. Please try again later.')
+        } finally {
+            setIsLoading(false)
         }
     }
     if (user) {
@@ -91,7 +99,7 @@ const Login = () => {
                         <div className="mt-6">
 
                             <button type="submit" className='btn_primary w-full'>
-                                Login
+                                {isLoading ? "Loading..." : "Sign up"}
                             </button>
 
                         </div>

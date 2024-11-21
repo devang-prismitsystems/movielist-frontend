@@ -2,7 +2,7 @@
 import Apiservices from '@/apiservices/apiServices'
 import Link from 'next/link'
 import { redirect, useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from 'react-hot-toast'
 
@@ -13,6 +13,7 @@ type Inputs = {
 
 const Signup = () => {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const {
         register,
         handleSubmit,
@@ -20,12 +21,19 @@ const Signup = () => {
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const result = await Apiservices.signup(data);
-        if (result.success) {
-            toast.success(result.message);
-            router.push('/login')
-        } else {
-            toast.error(result?.response?.data?.message)
+        setIsLoading(true)
+        try {
+            const result = await Apiservices.signup(data);
+            if (result.success) {
+                toast.success(result.message);
+                router.push('/login')
+            } else {
+                toast.error(result?.response?.data?.message)
+            }
+        } catch (error) {
+            toast.error('Something went wrong. Please try again later.')
+        } finally {
+            setIsLoading(false)
         }
     }
     return (
@@ -75,7 +83,7 @@ const Signup = () => {
                         <div className="mt-6">
 
                             <button type="submit" className='btn_primary w-full'>
-                                Sign up
+                                {isLoading ? "Loading..." : "Sign up"}
                             </button>
 
                         </div>
