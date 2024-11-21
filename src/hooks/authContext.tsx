@@ -38,7 +38,6 @@ export const getKeyWithExpiration = (): string | null => {
         return null;
     }
 
-    console.log('key: ', key);
     return key;
 };
 
@@ -51,22 +50,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         const key = getKeyWithExpiration();
         if (!key) {
-            router.push('/login')
-            // if (pathname.startsWith('/movies')) {
-            //     router.push('/login');
-            // }
+            if (pathname.startsWith('/movies')) {
+                router.push('/login');
+            }
             setLoading(false);
         } else {
             Apiservices.profile()
                 .then((result: any) => {
                     if (result?.success) {
                         setUser(result.data);
-                    } else {
-                        throw new Error('Failed to fetch user profile');
                     }
                 })
                 .catch((error) => {
-                    console.error('Failed to fetch user profile:', error);
                     router.push('/login');
                 })
                 .finally(() => setLoading(false));

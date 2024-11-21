@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { movieImgUrl } from "../../config";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type Inputs = {
     title: string;
@@ -17,9 +18,10 @@ interface MovieFormProps {
     initialValues?: { title: string; year: string };
     movieId?: any;
     existingImage?: string;
+    isLoading: boolean;
 }
 
-const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId, existingImage }) => {
+const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId, existingImage, isLoading }) => {
 
     const router = useRouter()
     const [imagePreview, setImagePreview] = useState<string | undefined | null>(existingImage || "");
@@ -82,6 +84,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                                 id="poster"
                                 type="file"
                                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-[1]"
+                                required={movieId ? false : true}
                                 // {...register("poster")}
                                 onChange={handleFileChange}
                             />
@@ -107,7 +110,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                             <input
                                 id="year"
                                 type="number"
-                                {...register("year", { required: "Publishing year is required", maxLength: 4 })}
+                                {...register("year", { required: "Publishing year is required" })}
                                 className={`w-full px-4 py-2.5 border rounded-lg outline-none transition-all ${errors.year
                                     ? "border-errorColor bg-errorBg"
                                     : "border-inputColor focus:border-foregroundColor focus:bg-inputHover"
@@ -132,7 +135,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                                 </svg>
                                 <span>Drop an image here</span>
                             </div>
-                            {imagePreview && <img src={imagePreview || ""} className="w-full h-full object-cover relative z-[1]" />}
+                            {imagePreview && <Image width={100} height={100} src={imagePreview || ""} className="w-full h-full object-cover relative z-[1]" alt="Movie poster" />}
                             <input
                                 id="poster"
                                 type="file"
@@ -149,7 +152,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                                 Cancel
                             </button>
                             <button type="submit" className="btn_primary w-full md:w-[179px] ">
-                                Submit
+                                {isLoading ? 'Loading...' : "Submit"}
                             </button>
                         </div>
                     </div>

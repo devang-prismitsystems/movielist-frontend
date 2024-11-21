@@ -8,9 +8,10 @@ import toast from 'react-hot-toast';
 
 const AddMovie = () => {
     const router = useRouter();
-
+    const [isLoading, SetIsLoading] = useState(false)
     const onSubmit = async (data: any) => {
         try {
+            SetIsLoading(true)
             let formData = new FormData();
             formData.append('title', data.title);
             formData.append('publish_year', data.year);
@@ -27,10 +28,12 @@ const AddMovie = () => {
             }
         } catch (error) {
             toast.error('An error occurred while adding the movie.');
+        } finally {
+            SetIsLoading(false)
         }
     };
 
-    return <MovieForm onSubmit={onSubmit} />;
+    return <MovieForm onSubmit={onSubmit} isLoading={isLoading} />;
 };
 
 export default AddMovie;

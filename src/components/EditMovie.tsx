@@ -33,6 +33,7 @@ const EditMovie = ({ id }: { id: any }) => {
 
     const onSubmit = async (data: any) => {
         try {
+            setIsLoading(true)
             let formData = new FormData();
             formData.append("id", id);
             formData.append("title", data.title);
@@ -51,6 +52,8 @@ const EditMovie = ({ id }: { id: any }) => {
         } catch (error) {
             console.error("Error updating movie: ", error);
             toast.error("An error occurred while updating the movie.");
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -65,7 +68,8 @@ const EditMovie = ({ id }: { id: any }) => {
                             year: movieDetails?.publish_year || "",
                         }}
                         movieId={id}
-                        existingImage={`${movieImgUrl}${movieDetails?.poster}`}
+                        existingImage={`${movieDetails?.poster}`}
+                        isLoading={isLoading}
                     />
                     :
                     <div className="flex justify-center items-center h-screen">Loading...</div>
