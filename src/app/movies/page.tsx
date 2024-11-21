@@ -2,12 +2,14 @@
 import Apiservices from '@/apiservices/apiServices';
 import Card from '@/components/Card';
 import Pagination from '@/components/Pagination';
+import { useAuth } from '@/hooks/authContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 const Movies = () => {
     const router = useRouter();
+    const { logout } = useAuth();
     const [movies, setMovies] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -45,11 +47,6 @@ const Movies = () => {
         router.push(`/movies/${id}`);
     }, [router]);
 
-    const handleLogout = useCallback(() => {
-        localStorage.removeItem('token');
-        router.push('/login');
-    }, [router]);
-
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -62,21 +59,6 @@ const Movies = () => {
         );
     }
 
-    if (movies.length === 0) {
-        return (
-            <div className="flex flex-col items-center justify-center h-screen px-4 text-center">
-                <h2 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10">
-                    Your movie list is empty
-                </h2>
-                <button
-                    className="btn_primary mt-4 md:mt-6 px-6 py-2 text-sm md:text-base"
-                    onClick={() => router.push(`/movies/add`)}
-                >
-                    Add a new movie
-                </button>
-            </div>
-        );
-    }
 
     return (
         <div className="container px-6 py-10">
@@ -89,7 +71,7 @@ const Movies = () => {
                         </svg>
                     </button>
                 </div>
-                <button className="flex items-center gap-4" onClick={handleLogout}>
+                <button className="flex items-center gap-4" onClick={() => logout()}>
                     <p className="font-bold hidden md:block">Logout</p>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className="max-w-[20px] max-h-[20px]">
                         <path d="M18.6667 6.66667L16.7867 8.54667L18.8933 10.6667H8V13.3333H18.8933L16.7867 15.44L18.6667 17.3333L24 12L18.6667 6.66667ZM2.66667 2.66667H12V0H2.66667C1.2 0 0 1.2 0 2.66667V21.3333C0 22.8 1.2 24 2.66667 24H12V21.3333H2.66667V2.66667Z" fill="white" />
@@ -98,7 +80,17 @@ const Movies = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-                {movies.map((movie) => (
+                {movies.length === 0 ? <div className="flex flex-col items-center justify-center h-screen px-4 text-center">
+                    <h2 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10">
+                        Your movie list is empty
+                    </h2>
+                    <button
+                        className="btn_primary mt-4 md:mt-6 px-6 py-2 text-sm md:text-base"
+                        onClick={() => router.push(`/movies/add`)}
+                    >
+                        Add a new movie
+                    </button>
+                </div> : movies.map((movie) => (
                     <div key={movie.id} onClick={() => handleCardClick(movie.id)} className="cursor-pointer">
                         <Card title={movie.title} year={movie.publish_year} img={movie.poster} />
                     </div>
