@@ -8,7 +8,6 @@ const axiosInstance: any = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config: any) => {
-    // const token = localStorage.getItem("token");
     const token = getKeyWithExpiration()
     if (!token) return null;
     if (token) {
@@ -41,7 +40,6 @@ export default class Apiservices {
     static login = async (data: any) => {
         try {
             const result: any = await axios.post(`${BACKEND_URI}/user/login`, data);
-            // localStorage.setItem('token', result.data.token)
             return result.data;
         } catch (error) {
             console.log('error: ', error);
@@ -75,6 +73,14 @@ export default class Apiservices {
     static getMovieDetails = async (id: any) => {
         try {
             const result = await axiosInstance.get(`${BACKEND_URI}/movie/details/${id}`);
+            return result.data;
+        } catch (error) {
+            return error
+        }
+    }
+    static deleteMovie = async (id: any) => {
+        try {
+            const result = await axiosInstance.delete(`${BACKEND_URI}/movie?id=${id}`);
             return result.data;
         } catch (error) {
             return error

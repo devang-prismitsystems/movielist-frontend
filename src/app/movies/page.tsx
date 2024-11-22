@@ -14,6 +14,8 @@ const Movies = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [movieToDelete, setMovieToDelete] = useState<number | null>(null);
 
     const fetchMovieList = useCallback(async () => {
         setLoading(true);
@@ -43,7 +45,30 @@ const Movies = () => {
     const handleCardClick = (id: number) => {
         router.push(`/movies/${id}`);
     };
+    const handleDeleteConfirmation = (id: number) => {
+        setMovieToDelete(id); // Set the movie ID for deletion
+        setShowDeleteModal(true); // Show the delete confirmation modal
+    };
 
+    const handleDelete = async () => {
+        if (movieToDelete === null) return; // Prevent execution if no movie ID is set
+        setLoading(true);
+        try {
+            const result = await Apiservices.deleteMovie(movieToDelete);
+            if (result.success) {
+                toast.success(result.message);
+                await fetchMovieList();
+            } else {
+                toast.error(result?.response?.data?.message || 'Failed to delete movie');
+            }
+        } catch (err) {
+            toast.error('An error occurred while deleting the movie.');
+        } finally {
+            setLoading(false);
+            setShowDeleteModal(false); // Close modal after deletion
+            setMovieToDelete(null); // Reset the movie ID
+        }
+    };
     if (loading) {
         return <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " >
             <h1 className="font-bold"> Loading...</h1>
@@ -74,17 +99,44 @@ const Movies = () => {
                 >
                     Add a new movie
                 </button>
-            </div> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10 md:gap-y-6 md:gap-x-6">
-                {movies.map((movie) => (
-                    <div key={movie.id} onClick={() => handleCardClick(movie.id)} className="cursor-pointer">
-                        <Card title={movie.title} year={movie.publish_year} img={movie.poster} />
-                    </div>
-                ))}
-            </div>}
+            </div> :
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10 md:gap-y-6 md:gap-x-6">
+                    {movies.map((movie) => (
+                        <div key={movie.id} onClick={() => handleCardClick(movie.id)} className="cursor-pointer">
+                            <Card title={movie.title} year={movie.publish_year} img={movie.poster} onDelete={() => handleDeleteConfirmation(movie.id)} />
+                        </div>
+                    ))}
+                </div>
+            }
 
             {movies.length > 0 && <div className="flex justify-center items-center mt-10 mb-10 md:mt-[120px] md:mb-[109px]">
                 <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
             </div>}
+            {showDeleteModal && (
+                <>
+                    <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-20"></div>
+                    <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-20">
+                        <div className="rounded-lg p-8 text-inputColor bg-foregroundColor">
+                            <h3 className="text-lg font-bold text-center">Confirm Deletion</h3>
+                            <p className='my-4'>Are you sure you want to delete this movie?</p>
+                            <div className="flex justify-between mt-6">
+                                <button
+                                    className="btn_primary font-bold"
+                                    onClick={handleDelete}
+                                >
+                                    Delete
+                                </button>
+                                <button
+                                    className="btn_secondary text-gray-600"
+                                    onClick={() => setShowDeleteModal(false)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
