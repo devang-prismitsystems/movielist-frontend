@@ -57,15 +57,17 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
     };
 
     return (
-        <div className="container mx-auto px-6 rounded-md flex flex-col justify-center gap-8">
-            <h1 className="text-2xl md:text-4xl font-semibold leading-tight md:leading-10 pt-8">
-                {movieId ? "Edit Movie" : "Add a New Movie"}
+        <div className="container main-wrap !mb-0 flex flex-col px-6">
+            <div className="flex justify-between py-20 md:py-[120px]  flex-initial">
+                <h1 className="text-[32px] md:text-[48px] font-semibold leading-[40px] md:leading-[56px]">
+                    {movieId ? "Edit" : "Create a new movie"}
             </h1>
-            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="mt-10">
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="mb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className=" hidden md:block">
                         <div
-                            className={`relative w-full max-w-[473px] h-[300px] md:h-[504px] rounded-md border-2 border-dashed overflow-hidden ${errors.poster
+                            className={`relative w-full max-w-[473px] h-[300px] md:h-[504px] rounded-[10px] border-2 border-dashed overflow-hidden ${errors.poster
                                 ? "border-errorColor"
                                 : "border-foregroundColor"
                                 }`}
@@ -85,7 +87,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                                 type="file"
                                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-[1]"
                                 required={movieId ? false : true}
-                                // {...register("poster")}
                                 onChange={handleFileChange}
                             />
                         </div>
@@ -121,7 +122,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
                         {errors.year && <p className="text-sm mt-2 text-errorColor">{errors.year.message}</p>}
 
                         <div
-                            className={`relative w-full h-[300px] md:h-[400px] rounded-md border-2 border-dashed overflow-hidden md:hidden mt-6 ${errors.poster
+                            className={`relative w-full h-[372px]  rounded-[10px] border-2 border-dashed overflow-hidden md:hidden mt-6 ${errors.poster
                                 ? "border-errorColor"
                                 : "border-foregroundColor"
                                 }`}
@@ -148,7 +149,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ onSubmit, initialValues, movieId,
 
 
                         <div className="  items-center gap-4 mt-10 md:mt-16 flex">
-                            <button type="button" className="btn_secondary w-full md:w-[168px]" onClick={() => router.push(`/movies`)}>
+                            <button type="button" className="btn_secondary  !px-[55px] w-full md:w-[168px]" onClick={() => router.push(`/movies`)}>
                                 Cancel
                             </button>
                             <button type="submit" className="btn_primary w-full md:w-[179px] flex justify-center items-center ">

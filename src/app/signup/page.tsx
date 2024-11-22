@@ -53,9 +53,14 @@ const Signup = () => {
                                 <input
                                     id="email"
                                     type="email"
-                                    {...register("email", { required: "Email is required" })}
+                                    {...register("email", {
+                                        required: "Email is required", pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: "Invalid email format"
+                                        }
+                                    })}
                                     className={`w-full px-4 py-2.5 border rounded-lg outline-none transition-all ${errors.email
-                                        ? "border-errorColor bg-errorBg"
+                                        ? "border-errorColor bg-errorBg shake"
                                         : "border-inputColor focus:border-foregroundColor focus:bg-inputHover"
                                         }`}
                                     placeholder="Email"
@@ -69,7 +74,19 @@ const Signup = () => {
                                 <input
                                     id="password"
                                     type="password"
-                                    {...register("password", { required: "Password is required" })}
+                                    {...register("password", {
+                                        required: "Password is required",
+                                        minLength: {
+                                            value: 8,
+                                            message: "Password must be at least 8 characters long"
+                                        },
+                                        validate: {
+                                            hasUpperCase: value => /[A-Z]/.test(value) || "Password must have at least one uppercase letter",
+                                            hasLowerCase: value => /[a-z]/.test(value) || "Password must have at least one lowercase letter",
+                                            hasNumber: value => /[0-9]/.test(value) || "Password must have at least one number",
+                                            hasSpecialChar: value => /[!@#$%^&*(),.?":{}|<>]/.test(value) || "Password must have at least one special character"
+                                        }
+                                    })}
                                     className={`w-full px-4 py-2.5 border rounded-lg outline-none transition-all ${errors.password
                                         ? "border-errorColor bg-errorBg"
                                         : "border-inputColor focus:border-foregroundColor focus:bg-inputHover"

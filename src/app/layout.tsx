@@ -29,8 +29,6 @@ export default function RootLayout({
             position="top-center"
             reverseOrder={false}
             gutter={8}
-            containerClassName=""
-            containerStyle={{}}
           />
           {children}
         </AuthProvider>
